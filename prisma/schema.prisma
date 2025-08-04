@@ -18,6 +18,7 @@ model User {
   email     String   @unique
   name      String
   password  String
+  role      Role     @default(DOCTOR)
   isActive  Boolean  @default(true)
   isDeleted Boolean  @default(false)
   twoFactorEnabled Boolean @default(false)
@@ -28,20 +29,7 @@ model User {
   @@map("users")
 }
 
-// model Patient {
-//   id        String   @id @default(uuid())
-//   userId    String
-//   user      User     @relation(fields: [userId], references: [id])
-//   email     String
-//   phone     String?
-//   name      String
-//   birthday DateTime?
-//   sex       String? @default("O") @map("sex") @db.VarChar(1)
-//   city      String?
-//   isActive  Boolean  @default(true)
-//   isDeleted Boolean  @default(false)
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   @@map("patients")
-// }
+enum Role {
+  ADMIN
+  DOCTOR
+}
