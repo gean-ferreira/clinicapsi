@@ -15,6 +15,12 @@ async function bootstrap(): Promise<void> {
   // Global prefix
   app.setGlobalPrefix('api');
 
+  // TODO: Implementar Prisma shutdown hook quando PrismaService for configurado
+  // const prismaService = app.get('PrismaService');
+  // if (prismaService && prismaService.enableShutdownHooks) {
+  //   await prismaService.enableShutdownHooks(app);
+  // }
+
   await app.listen(process.env.PORT ?? 8000);
 }
 
