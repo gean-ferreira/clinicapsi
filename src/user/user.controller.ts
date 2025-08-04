@@ -1,10 +1,21 @@
-import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -62,5 +73,51 @@ export class UserController {
   })
   async findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
+  }
+
+  @Get(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'ID do usuário',
+    example: 'uuid',
+  })
+  @ApiOkResponse({
+    description: 'Usuário encontrado',
+    type: UserResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'ID inválido',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'ID inválido',
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Usuário não encontrado',
+      },
+    },
+  })
+  async findById(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        version: '4',
+        exceptionFactory: () => {
+          throw new BadRequestException({
+            statusCode: 400,
+            message: 'ID inválido',
+          });
+        },
+      }),
+    )
+    id: string,
+  ): Promise<UserResponseDto> {
+    return this.userService.findById(id);
   }
 }
