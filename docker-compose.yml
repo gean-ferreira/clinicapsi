@@ -3,9 +3,9 @@ services:
     image: postgres:17
     container_name: clinicapsi_postgres
     environment:
-      POSTGRES_USER: clinicapsi
-      POSTGRES_PASSWORD: clinicapsi
-      POSTGRES_DB: clinicapsi
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./docker/backup:/backup
