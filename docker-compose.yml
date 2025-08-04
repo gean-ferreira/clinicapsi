@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17
+    container_name: clinicapsi_postgres
+    environment:
+      POSTGRES_USER: clinicapsi
+      POSTGRES_PASSWORD: clinicapsi
+      POSTGRES_DB: clinicapsi
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./docker/backup:/backup
+    ports:
+      - 5432:5432
+
+  app:
+    build: .
+    container_name: clinicapsi_app
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./:/usr/src/app
+    command: npx prisma migrate deploy && npm run start:prod
+    ports:
+      - 8000:8000
+
+volumes:
+  db_data:
