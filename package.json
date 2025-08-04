@@ -26,6 +26,7 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.0",
     "@prisma/client": "^6.13.0",
     "@types/helmet": "^0.0.48",
     "helmet": "^8.1.0",

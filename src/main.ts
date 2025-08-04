@@ -1,9 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { default as helmet } from 'helmet';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+
+  // Global prefix
+  app.setGlobalPrefix('api');
 
   // Segurança
   app.use(helmet());
@@ -12,14 +16,15 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
-  // Global prefix
-  app.setGlobalPrefix('api');
+  // Documentação
+  const config = new DocumentBuilder()
+    .setTitle('Clinicapsi API')
+    .setDescription('Documentação da API do Clinicapsi')
+    .setVersion('1.0')
+    .build();
 
-  // TODO: Implementar Prisma shutdown hook quando PrismaService for configurado
-  // const prismaService = app.get('PrismaService');
-  // if (prismaService && prismaService.enableShutdownHooks) {
-  //   await prismaService.enableShutdownHooks(app);
-  // }
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/docs', app, document);
 
   await app.listen(process.env.PORT ?? 8000);
 }
