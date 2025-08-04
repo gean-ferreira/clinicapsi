@@ -1,14 +1,16 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
 import {
   ApiTags,
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiConflictResponse,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { createUserSchema } from './validators/create-user.zod';
 import { UserService } from './user.service';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -51,5 +53,14 @@ export class UserController {
   @UsePipes(new ZodValidationPipe(createUserSchema))
   async create(@Body() body: CreateUserDto) {
     return this.userService.create(body);
+  }
+
+  @Get()
+  @ApiOkResponse({
+    description: 'Lista de usuários cadastrados',
+    type: [UserResponseDto],
+  })
+  async findAll(): Promise<UserResponseDto[]> {
+    return this.userService.findAll();
   }
 }

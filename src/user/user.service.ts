@@ -2,6 +2,7 @@ import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserInput } from './validators/create-user.zod';
 import * as bcrypt from 'bcrypt';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
     }
   }
 
-  async create(data: CreateUserInput) {
+  async create(data: CreateUserInput): Promise<UserResponseDto> {
     // 1. Verifica se o e-mail já está cadastrado
     await this.checkEmailUnique(data.email);
 
@@ -42,5 +43,21 @@ export class UserService {
     });
 
     return user;
+  }
+
+  async findAll(): Promise<UserResponseDto[]> {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 }
