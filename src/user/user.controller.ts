@@ -34,16 +34,7 @@ export class UserController {
   @Post()
   @ApiCreatedResponse({
     description: 'Usuário criado com sucesso',
-    schema: {
-      example: {
-        id: 'uuid',
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        role: 'DOCTOR',
-        createdAt: '2025-08-03T19:00:00.000Z',
-        updatedAt: '2025-08-03T19:00:00.000Z',
-      },
-    },
+    type: UserResponseDto,
   })
   @ApiBadRequestResponse({
     description: 'Dados inválidos',
