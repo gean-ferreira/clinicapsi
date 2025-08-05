@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserInput } from './validators/create-user.zod';
 import * as bcrypt from 'bcrypt';
@@ -18,13 +23,14 @@ export class UserService {
     }
   }
 
-  private async checkUserExists(id: string): Promise<void> {
+  private async checkUserExists(id: string): Promise<UserResponseDto> {
     const user = await this.prisma.user.findUnique({
       where: { id },
     });
     if (!user) {
       throw new NotFoundException({ message: 'Usuário não encontrado' });
     }
+    return user;
   }
 
   async create(data: CreateUserInput): Promise<UserResponseDto> {
@@ -138,6 +144,62 @@ export class UserService {
     });
 
     return updatedUser;
+  }
+
+  async activate(id: string): Promise<UserResponseDto> {
+    // 1. Busca o usuário
+    const user = await this.checkUserExists(id);
+
+    // 2. Verifica se o usuário já está ativo
+    if (user.isActive) {
+      throw new BadRequestException({ message: 'Usuário já está ativo' });
+    }
+
+    // 2. Ativa o usuário
+    const activatedUser = await this.prisma.user.update({
+      where: { id },
+      data: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isActive: true,
+        isDeleted: true,
+        deletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return activatedUser;
+  }
+
+  async deactivate(id: string): Promise<UserResponseDto> {
+    // 1. Busca o usuário
+    const user = await this.checkUserExists(id);
+
+    // 2. Verifica se o usuário já está desativado
+    if (!user.isActive) {
+      throw new BadRequestException({ message: 'Usuário já está desativado' });
+    }
+
+    // 2. Desativa o usuário
+    const deactivatedUser = await this.prisma.user.update({
+      where: { id },
+      data: { isActive: false },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isActive: true,
+        isDeleted: true,
+        deletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return deactivatedUser;
   }
 
   async softDelete(id: string): Promise<UserResponseDto> {

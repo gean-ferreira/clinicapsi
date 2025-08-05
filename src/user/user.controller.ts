@@ -171,6 +171,116 @@ export class UserController {
     return this.userService.update(id, body);
   }
 
+  @Patch(':id/activate')
+  @ApiParam({
+    name: 'id',
+    description: 'ID do usuário',
+    example: 'uuid',
+  })
+  @ApiOkResponse({
+    description: 'Usuário ativado',
+    type: UserResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'ID inválido',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'ID inválido',
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Usuário não encontrado',
+      },
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Usuário já está ativo',
+    schema: {
+      example: {
+        statusCode: 409,
+        message: 'Usuário já está ativo',
+      },
+    },
+  })
+  async activate(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        version: '4',
+        exceptionFactory: () => {
+          throw new BadRequestException({
+            statusCode: 400,
+            message: 'ID inválido',
+          });
+        },
+      }),
+    )
+    id: string,
+  ): Promise<UserResponseDto> {
+    return this.userService.activate(id);
+  }
+
+  @Patch(':id/deactivate')
+  @ApiParam({
+    name: 'id',
+    description: 'ID do usuário',
+    example: 'uuid',
+  })
+  @ApiOkResponse({
+    description: 'Usuário desativado',
+    type: UserResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'ID inválido',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'ID inválido',
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Usuário não encontrado',
+      },
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Usuário já está desativado',
+    schema: {
+      example: {
+        statusCode: 409,
+        message: 'Usuário já está desativado',
+      },
+    },
+  })
+  async deactivate(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        version: '4',
+        exceptionFactory: () => {
+          throw new BadRequestException({
+            statusCode: 400,
+            message: 'ID inválido',
+          });
+        },
+      }),
+    )
+    id: string,
+  ): Promise<UserResponseDto> {
+    return this.userService.deactivate(id);
+  }
+
   @Patch(':id/soft-delete')
   @ApiParam({
     name: 'id',
