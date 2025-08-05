@@ -179,4 +179,50 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return this.userService.update(id, body);
   }
+
+  @Patch(':id/soft-delete')
+  @ApiParam({
+    name: 'id',
+    description: 'ID do usuário',
+    example: 'uuid',
+  })
+  @ApiOkResponse({
+    description: 'Usuário deletado',
+    type: UserResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'ID inválido',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: 'ID inválido',
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Usuário não encontrado',
+      },
+    },
+  })
+  async softDelete(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        version: '4',
+        exceptionFactory: () => {
+          throw new BadRequestException({
+            statusCode: 400,
+            message: 'ID inválido',
+          });
+        },
+      }),
+    )
+    id: string,
+  ): Promise<UserResponseDto> {
+    return this.userService.softDelete(id);
+  }
 }

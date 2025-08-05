@@ -139,4 +139,31 @@ export class UserService {
 
     return updatedUser;
   }
+
+  async softDelete(id: string): Promise<UserResponseDto> {
+    // 1. Verifica se o usuário existe
+    await this.checkUserExists(id);
+
+    // 2. Soft delete
+    const deletedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+        deletedAt: new Date(),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isActive: true,
+        isDeleted: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+      },
+    });
+
+    return deletedUser;
+  }
 }
