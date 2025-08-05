@@ -23,6 +23,7 @@ model User {
   isDeleted Boolean  @default(false)
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret String?
+  deletedAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
