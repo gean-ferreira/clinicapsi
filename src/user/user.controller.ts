@@ -17,6 +17,7 @@ import {
   ApiOkResponse,
   ApiNotFoundResponse,
   ApiParam,
+  ApiUnprocessableEntityResponse
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -55,8 +56,17 @@ export class UserController {
       },
     },
   })
-  @UsePipes(new ZodValidationPipe(createUserSchema))
-  async create(@Body() body: CreateUserDto) {
+  @ApiUnprocessableEntityResponse({
+    description: 'Dados inválidos',
+    schema: {
+      example: {
+        statusCode: 422,
+        message: 'Dados inválidos',
+        errors: [{ field: 'email', message: 'E-mail inválido' }],
+      },
+    },
+  })
+  async create(@Body(new ZodValidationPipe(createUserSchema)) body: CreateUserDto) {
     return this.userService.create(body);
   }
 
@@ -152,6 +162,17 @@ export class UserController {
       },
     },
   })
+  @ApiUnprocessableEntityResponse({
+    description: 'Dados inválidos',
+    schema: {
+      example: {
+        statusCode: 422,
+        message: 'Dados inválidos',
+        errors: [{ field: 'email', message: 'E-mail inválido' }],
+      },
+    },
+  })
+  @UsePipes(new ZodValidationPipe(updateUserSchema))
   async update(
     @Param(
       'id',

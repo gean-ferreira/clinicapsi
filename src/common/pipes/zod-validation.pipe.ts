@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform, UnprocessableEntityException } from '@nestjs/common';
 import { ZodError, ZodType } from 'zod';
 
 @Injectable()
@@ -14,7 +14,8 @@ export class ZodValidationPipe implements PipeTransform {
           field: e.path.join('.'),
           message: e.message,
         }));
-        throw new BadRequestException({
+        throw new UnprocessableEntityException({
+          statusCode: 422,
           message: 'Dados inválidos',
           errors,
         });
