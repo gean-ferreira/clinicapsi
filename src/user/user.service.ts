@@ -3,6 +3,7 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  GoneException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserInput } from './validators/create-user.zod';
@@ -158,7 +159,12 @@ export class UserService {
 
   async softDelete(id: string): Promise<UserResponseDto> {
     // 1. Verifica se o usuário existe
-    await this.checkUserExists(id);
+    const user = await this.checkUserExists(id);
+
+    // 2. Verifica se o usuário já está deletado
+    if (user.isDeleted) {
+      throw new GoneException({ message: 'Usuário já está deletado' });
+    }
 
     // 2. Soft delete
     const deletedUser = await this.prisma.user.update({

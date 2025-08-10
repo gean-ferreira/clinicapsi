@@ -17,7 +17,8 @@ import {
   ApiOkResponse,
   ApiNotFoundResponse,
   ApiParam,
-  ApiUnprocessableEntityResponse
+  ApiUnprocessableEntityResponse,
+  ApiGoneResponse,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -327,6 +328,15 @@ export class UserController {
       example: {
         statusCode: 404,
         message: 'Usuário não encontrado',
+      },
+    },
+  })
+  @ApiGoneResponse({
+    description: 'Usuário já está deletado',
+    schema: {
+      example: {
+        statusCode: 410,
+        message: 'Usuário já está deletado',
       },
     },
   })
