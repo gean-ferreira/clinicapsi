@@ -14,6 +14,20 @@ import { UpdateUserInput } from './validators/update-user.zod';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  private userSelect() {
+    return {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      isActive: true,
+      isDeleted: true,
+      deletedAt: true,
+      createdAt: true,
+      updatedAt: true,
+    } as const;
+  }
+
   private async checkEmailUnique(email: string, excludeUserId?: string): Promise<void> {
     const user = await this.prisma.user.findUnique({
       where: { email },
@@ -48,17 +62,7 @@ export class UserService {
         password: passwordHash,
         role: data.role,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
     });
 
     return user;
@@ -66,17 +70,7 @@ export class UserService {
 
   async findAll(): Promise<UserResponseDto[]> {
     return this.prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
       orderBy: {
         createdAt: 'desc',
       },
@@ -86,17 +80,7 @@ export class UserService {
   async findById(id: string): Promise<UserResponseDto> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
     });
 
     if (!user) {
@@ -130,17 +114,7 @@ export class UserService {
         password: data.password,
         role: data.role,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
     });
 
     return updatedUser;
@@ -159,17 +133,7 @@ export class UserService {
     const activatedUser = await this.prisma.user.update({
       where: { id },
       data: { isActive: true },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
     });
     return activatedUser;
   }
@@ -187,17 +151,7 @@ export class UserService {
     const deactivatedUser = await this.prisma.user.update({
       where: { id },
       data: { isActive: false },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        deletedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelect(),
     });
     return deactivatedUser;
   }
@@ -213,17 +167,7 @@ export class UserService {
         isDeleted: true,
         deletedAt: new Date(),
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isActive: true,
-        isDeleted: true,
-        createdAt: true,
-        updatedAt: true,
-        deletedAt: true,
-      },
+      select: this.userSelect(),
     });
 
     return deletedUser;
