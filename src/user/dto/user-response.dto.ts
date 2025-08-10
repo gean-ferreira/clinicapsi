@@ -19,18 +19,18 @@ export class UserResponseDto {
   @ApiProperty({ example: true, description: 'Se o usuário está deletado' })
   isDeleted: boolean;
 
-  @ApiProperty({ example: '2025-08-03T19:00:00.000Z', description: 'Data de criação do usuário' })
+  @ApiProperty({ example: '2025-08-03T19:00:00.000Z', description: 'Data de criação' })
   createdAt: Date;
 
   @ApiProperty({
     example: '2025-08-03T19:00:00.000Z',
-    description: 'Data de atualização do usuário',
+    description: 'Data de atualização',
   })
   updatedAt: Date;
 
   @ApiProperty({
     example: '2025-08-03T19:00:00.000Z',
-    description: 'Data de exclusão do usuário',
+    description: 'Data de exclusão',
   })
   deletedAt: Date | null;
 }
