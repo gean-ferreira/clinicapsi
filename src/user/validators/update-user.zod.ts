@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const updateUserSchema = z.object({
   name: z
-    .string()
+    .string({ message: 'Nome inválido' })
     .min(3, { message: 'Nome deve ter no mínimo 3 caracteres' })
     .max(100, { message: 'Nome deve ter no máximo 100 caracteres' })
     .optional(),
@@ -11,7 +11,7 @@ export const updateUserSchema = z.object({
     .max(100, { message: 'Email deve ter no máximo 100 caracteres' })
     .optional(),
   password: z
-    .string()
+    .string({ message: 'Senha inválida' })
     .min(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
     .max(32, { message: 'Senha deve ter no máximo 32 caracteres' })
     .regex(
