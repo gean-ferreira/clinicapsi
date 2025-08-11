@@ -4,6 +4,7 @@ export const updatePatientSchema = z.object({
   email: z
     .email({ message: 'Email inválido' })
     .max(100, { message: 'Email deve ter no máximo 100 caracteres' })
+    .transform((email) => email.trim().toLowerCase())
     .optional(),
   phone: z
     .string({ message: 'Telefone inválido' })
@@ -15,6 +16,7 @@ export const updatePatientSchema = z.object({
     .string({ message: 'Nome inválido' })
     .min(3, { message: 'Nome deve ter no mínimo 3 caracteres' })
     .max(100, { message: 'Nome deve ter no máximo 100 caracteres' })
+    .trim()
     .optional(),
   birthday: z
     .string({ message: 'Data inválida' })
@@ -24,6 +26,7 @@ export const updatePatientSchema = z.object({
     .string({ message: 'Cidade inválida' })
     .min(2, { message: 'Cidade inválida' })
     .max(100, { message: 'Cidade deve ter no máximo 100 caracteres' })
+    .trim()
     .optional(),
 });
 
