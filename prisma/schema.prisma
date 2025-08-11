@@ -34,3 +34,22 @@ enum Role {
   ADMIN
   DOCTOR
 }
+
+model Patient {
+  id        String   @id @default(uuid())
+  doctorId  String   
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  name      String
+  email     String   @unique
+  phone     String?
+  birthday  DateTime?
+  city      String?
+  isActive  Boolean  @default(true)
+  isDeleted Boolean  @default(false)
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([doctorId, email]) // Apenas um paciente por doutor com o mesmo e-mail
+  @@map("patients")
+}
