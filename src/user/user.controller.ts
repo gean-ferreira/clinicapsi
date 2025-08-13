@@ -38,16 +38,6 @@ export class UserController {
     description: 'Usuário criado com sucesso',
     type: UserResponseDto,
   })
-  @ApiBadRequestResponse({
-    description: 'Dados inválidos',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: 'Dados inválidos',
-        errors: [{ field: 'email', message: 'Invalid email' }],
-      },
-    },
-  })
   @ApiConflictResponse({
     description: 'E-mail já cadastrado',
     schema: {

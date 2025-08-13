@@ -37,16 +37,6 @@ export class PatientController {
 
   @Post()
   @ApiCreatedResponse({ description: 'Paciente criado com sucesso', type: PatientResponseDto })
-  @ApiBadRequestResponse({
-    description: 'Dados inválidos',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: 'Dados inválidos',
-        errors: [{ field: 'email', message: 'Invalid email' }],
-      },
-    },
-  })
   @ApiUnprocessableEntityResponse({
     description: 'Dados inválidos',
     schema: {
