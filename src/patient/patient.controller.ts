@@ -22,13 +22,13 @@ import {
   ApiUnprocessableEntityResponse,
   ApiGoneResponse,
 } from '@nestjs/swagger';
-import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
-import { PatientService } from './patient.service';
-import { createPatientSchema } from './validators/create-patient.zod';
-import { CreatePatientDto } from './dto/create-patient.dto';
-import { PatientResponseDto } from './dto/patient-response.dto';
-import { updatePatientSchema } from './validators/update-patient.zod';
-import { UpdatePatientDto } from './dto/update-patient.dto';
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe.js';
+import { PatientService } from './patient.service.js';
+import { createPatientSchema } from './validators/create-patient.zod.js';
+import { CreatePatientDto } from './dto/create-patient.dto.js';
+import { PatientResponseDto } from './dto/patient-response.dto.js';
+import { updatePatientSchema } from './validators/update-patient.zod.js';
+import { UpdatePatientDto } from './dto/update-patient.dto.js';
 
 @ApiTags('patients')
 @Controller('patients')

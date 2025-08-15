@@ -20,13 +20,13 @@ import {
   ApiUnprocessableEntityResponse,
   ApiGoneResponse,
 } from '@nestjs/swagger';
-import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
-import { CreateUserDto } from './dto/create-user.dto';
-import { createUserSchema } from './validators/create-user.zod';
-import { UserService } from './user.service';
-import { UserResponseDto } from './dto/user-response.dto';
-import { updateUserSchema } from './validators/update-user.zod';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe.js';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { createUserSchema } from './validators/create-user.zod.js';
+import { UserService } from './user.service.js';
+import { UserResponseDto } from './dto/user-response.dto.js';
+import { updateUserSchema } from './validators/update-user.zod.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
 
 @ApiTags('users')
 @Controller('users')

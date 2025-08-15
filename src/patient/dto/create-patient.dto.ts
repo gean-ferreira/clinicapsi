@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { CreatePatientInput } from '../validators/create-patient.zod';
+import { CreatePatientInput } from '../validators/create-patient.zod.js';
 
 export class CreatePatientDto implements CreatePatientInput {
   @ApiProperty({ example: 'uuid', description: 'ID do doutor (User)' })

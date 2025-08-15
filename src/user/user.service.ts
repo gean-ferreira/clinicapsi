@@ -5,11 +5,12 @@ import {
   BadRequestException,
   GoneException,
 } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserInput } from './validators/create-user.zod';
-import * as bcrypt from 'bcrypt';
-import { UserResponseDto } from './dto/user-response.dto';
-import { UpdateUserInput } from './validators/update-user.zod';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { CreateUserInput } from './validators/create-user.zod.js';
+import bcrypt from 'bcrypt';
+import { UserResponseDto } from './dto/user-response.dto.js';
+import { UpdateUserInput } from './validators/update-user.zod.js';
+import { UserDto } from './dto/user.dto.js';
 
 @Injectable()
 export class UserService {

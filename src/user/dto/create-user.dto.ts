@@ -1,4 +1,4 @@
-import { CreateUserInput } from '../validators/create-user.zod';
+import { CreateUserInput } from '../validators/create-user.zod.js';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto implements CreateUserInput {
